@@ -57,29 +57,15 @@ var legend = L.control({position: 'bottomright'});
 	}
 	legend.addTo(map);
 
-// var mortgagedata = []; 
-// mortgagedata = d3.csv("static/js/year.csv");
-// filterdata(mortgagedata);
 
-// d3.csv("db/year.csv",function(mortdata){
-// //    console.log(mortdata);
-//     filterdata(mortdata);
-// });
 
-d3.json("/yearly", function (mortdata) {
-
-    console.log(mortdata);
-    filterdata(mortdata);
-});
-
-    //console.log(mortgagedata);
-function filterdata(mortgagedata) {
+d3.json("/housing", function (mortdata) {
     // processes i/p data - (a) get right year  
-    for (var i = 0; i < mortgagedata.length; i++) {
-        var yearvalue = mortgagedata[i].Year;
+    for (var i = 0; i < mortdata.length; i++) {
+        var yearvalue = mortdata[i].Year;
         //console.log(yearvalue);
         if (yearvalue == "2018"){
-         var avgincome = mortgagedata[i];
+         var avgincome = mortdata[i];
         // console.log(avgincome);
         // Sort mortgagedata by state
          var ordered = {};
@@ -145,4 +131,4 @@ function filterdata(mortgagedata) {
         }
     }
 }
-}
+});

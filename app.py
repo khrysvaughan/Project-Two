@@ -30,14 +30,15 @@ app = Flask(__name__)
 # yearlyData_dict = yearlyData_df.to_dict(orient='records')
 # yearlyData_json= json.dumps(yearlyData_dict)
 
+# For this connection, a password is needed
 conn = mysql.connector.connect(host='localhost',port='3306',
                                            database='housing_db',
                                            user='root'
                                            ,
-                                           password='Mnjhuy76!')
+                                           password='')
 cursor = conn.cursor()                                 
 if conn.is_connected():
-    print('sucessful...Connected to MySQL database')
+    print('Successful...Connected to MySQL database')
 cursor.execute(" SELECT * FROM yearlydatanew ")
    
 jsonFile = []
@@ -56,11 +57,55 @@ for row in cursor.fetchall():
         jsonFile.append(dictionary)  
     
 
-csv_Meena = "db/combinedData.csv"
+# csv_Meena = "db/combinedData.csv"
 
-Meena_df = pd.read_csv(csv_Meena)
-Meena_df_dict = Meena_df.to_dict(orient='records')
-Meena_df_json= json.dumps(Meena_df_dict)
+# Meena_df = pd.read_csv(csv_Meena)
+# Meena_df_dict = Meena_df.to_dict(orient='records')
+# Meena_df_json= json.dumps(Meena_df_dict)
+
+cursor.execute(" SELECT * FROM combineddata ")
+   
+jsonMeena = []
+flag = 0
+keys = []
+for row in cursor.fetchall():
+    row =[x for x in row]
+
+    if row[0] == 'Label' and flag == 0:
+        keys = row
+
+    elif row[0] == 'Dates':
+        
+        values = [int(i) for i in row[1:]]
+        values = ['Dates'] + values
+        dictionary = dict(zip(keys, values))
+        jsonMeena.append(dictionary)
+    
+    elif row[0] != 'Dates' and row[0] != 'Label':
+        state = [row[0]]
+        values = [float(i) for i in row[1:]]
+        values = state + values
+        dictionary = dict(zip(keys, values))
+        jsonMeena.append(dictionary)  
+    flag = 1
+    
+cursor.execute(" SELECT * FROM yearlynew ")
+   
+jsonFile2 = []
+flag = 0
+keys = []
+for row in cursor.fetchall():
+    row =[x for x in row]
+
+    if row[0] == 'State':
+        keys = [str(i) for i in row[1:]]
+        keys = ['State'] + keys
+    else:
+        values = row
+        
+        dictionary = dict(zip(keys, values))
+        print(dictionary)
+        jsonFile2.append(dictionary)
 
 @app.route("/")
 def index():
@@ -68,11 +113,11 @@ def index():
     return render_template("index.html")
 
 
-    # @app.route("/housing")
-    # def housing():
-    #     """Return a list of housing data dictionary"""
+@app.route("/housing")
+def housing():
+    """Return a list of housing data dictionary"""
 
-    #     return meanHousingPrice_json
+    return jsonify(jsonFile2)
 
 @app.route("/yearly")
 def housingYearly():
@@ -83,7 +128,7 @@ def housingYearly():
 @app.route("/Meena")
 def Meena():
 
-     return Meena_df_json
+     return jsonify(jsonMeena)
 
 @app.route("/states")
 def states():

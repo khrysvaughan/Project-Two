@@ -11,31 +11,32 @@ function init() {
 
 
     // Use the list of sample names to populate the select options
-    d3.json("/yearly", function (sampleNames) {
+    d3.json("/housing", function (sampleNames) {
 
-        selector.data(sampleNames).selectAll("option").enter().append("option").text(d=>d.State)
-        // sampleNames.forEach((sample) => {
-        //     selector
-        //         .append("option")
-        //         .text(sample.State)
-        //         .attr("value", sample);
-        // });
+        //selector.data(sampleNames).selectAll("option").enter().append("option").text(d=>d.State)
 
-        // for (var key in sampleNames){
-        //     if (sampleNames.hasOwnProperty(key)) {
-        //         if (sampleNames[key].State !== 'mortRate' && 
-        //         sampleNames[key].State !== 'DJI_Open' &&
-        //         sampleNames[key].State !== 'DJI_Close' &&
-        //         sampleNames[key].State !== 'DJI_Low' &&
-        //         sampleNames[key].State !== 'DJI_High') {
-        //             selector
-        //             .append("option")
-        //             .text(sampleNames[key].State)
-        //             .property("value", sampleNames[key])
-        //         }
-        //     }
-        //     console.log(key);
-        // }
+        sampleNames.forEach((sample) => {
+            selector
+                .append("option")
+                .text(sample.State)
+                .attr("value", sample);
+        });
+
+        for (var key in sampleNames){
+            if (sampleNames.hasOwnProperty(key)) {
+                if (sampleNames[key].State !== 'mortRate' && 
+                sampleNames[key].State !== 'DJI_Open' &&
+                sampleNames[key].State !== 'DJI_Close' &&
+                sampleNames[key].State !== 'DJI_Low' &&
+                sampleNames[key].State !== 'DJI_High') {
+                    selector
+                    .append("option")
+                    .text(sampleNames[key].State)
+                    .property("value", sampleNames[key])
+                }
+            }
+            console.log(key);
+        }
 
         // Use the first sample from the list to build the initial plots
         const firstSample = sampleNames[0]

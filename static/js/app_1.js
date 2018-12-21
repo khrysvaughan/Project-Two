@@ -116,10 +116,10 @@
 
     data_bubble=[trace_bubble1,trace_bubble2,bubble3];
     var layout  ={
-        title:`${sample} HousingPricing $ Mortgage rate $ DIJ`,
+        title:`${sample} HousingPricing $ Mortgage rate $ DJI`,
         xaxis1:{
         //  scaleanchor: "y1",
-          title:'year',
+          title:'Year',
           nticks: 10,
           domain: [0, 0.3],
           autorange:true,
@@ -130,7 +130,7 @@
         },
         xaxis2:{
             scaleanchor: "x2",
-            title:'DIJ',
+            title:'DJI',
             nticks: 10,
             domain: [0.33, 0.63],
             autorange:true,
@@ -141,7 +141,7 @@
           },
           xaxis3:{
             scaleanchor: "x3",
-            title:'MortR',
+            title:'Mortgage Rate',
             nticks: 10,
             domain: [0.64, 1],
             autorange:true,
